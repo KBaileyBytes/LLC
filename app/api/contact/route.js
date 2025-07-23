@@ -21,7 +21,7 @@ export async function POST(req) {
   const mailOptions = {
     from: `"${first} ${last || ""}" <${email}>`,
     to: process.env.EMAIL_RECEIVER,
-    subject: "New Message",
+    subject: "New Message From LLC",
     text: `
       You have a new message from LeeLeesCreationz:
 

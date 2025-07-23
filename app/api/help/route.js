@@ -9,7 +9,6 @@ export async function POST(req) {
     return new Response("Missing required fields", { status: 400 });
   }
 
-  // Configure your mail transporter (Gmail example)
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -20,8 +19,8 @@ export async function POST(req) {
 
   const mailOptions = {
     from: "Leah",
-    to: process.env.EMAIL_RECEIVER,
-    subject: "Help Message",
+    to: process.env.EMAIL_USER,
+    subject: "LLC Help",
     text: `
       You have a new message from LeeLeesCreationz:
 
