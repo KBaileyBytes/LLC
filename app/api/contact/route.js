@@ -9,7 +9,6 @@ export async function POST(req) {
     return new Response("Missing required fields", { status: 400 });
   }
 
-  // Configure your mail transporter (Gmail example)
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -19,17 +18,18 @@ export async function POST(req) {
   });
 
   const mailOptions = {
-    from: `"${first} ${last || ""}" <${email}>`,
+    from: `"LeeLeesCreationz Contact Form" <${process.env.EMAIL_USER}>`,
     to: process.env.EMAIL_RECEIVER,
-    subject: "New Message From LLC",
+    subject: "New Message From LeeLeesCreationz",
+    ...(email && { replyTo: email }),
     text: `
-      You have a new message from LeeLeesCreationz:
+You have a new message from LeeLeesCreationz:
 
-      Name: ${first} ${last || ""}
-      Email: ${email}
-      Message:
-      ${message}
-    `,
+Name: ${first} ${last || ""}
+Email: ${email || "Not provided"}
+Message:
+${message}
+  `,
   };
 
   try {

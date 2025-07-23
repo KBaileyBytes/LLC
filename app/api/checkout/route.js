@@ -66,9 +66,10 @@ Item ${index + 1}:
     });
 
     const mailOptions = {
-      from: `"${first} ${last || ""}" <${email}>`,
+      from: `"LeeLeesCreationz Order" <${process.env.EMAIL_USER}>`,
       to: process.env.EMAIL_RECEIVER,
       subject: "New Order Submission",
+      replyTo: email,
       text: `
 You have a new order from LeeLeesCreationz:
 
@@ -80,7 +81,7 @@ Total: $${total.toFixed(2)}
 ${first} ordered the following:
 
 ${cartString}
-    `,
+  `,
     };
 
     await transporter.sendMail(mailOptions);
