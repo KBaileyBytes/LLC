@@ -44,7 +44,8 @@ export default function CalendarGrid({ relatedEvents, selectedDate }) {
       </div>
 
       {/* Calendar grid */}
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid grid-cols-1 sm:grid-cols-7 gap-2">
+        {" "}
         {days.map((date, idx) => {
           const inMonth = isSameMonth(date, selectedDate);
           const eventsToday = relatedEvents.filter((event) => {
@@ -64,7 +65,7 @@ export default function CalendarGrid({ relatedEvents, selectedDate }) {
                 inMonth ? "bg-white text-black" : "bg-gray-100 text-gray-400"
               }`}
             >
-              <span className={eventsToday.length > 0 ? `mb-1 ml-4` : ``}>
+              <span className={eventsToday.length > 0 ? `mx-auto` : ``}>
                 {format(date, "d")}
               </span>
 
@@ -74,7 +75,7 @@ export default function CalendarGrid({ relatedEvents, selectedDate }) {
                   <Badge
                     key={i}
                     variant="secondary"
-                    className={`px-2 my-2 text-white text-xs italic font-bold rounded-full ${
+                    className={`px-2 my-0.5 text-white text-xs italic font-bold rounded-full ${
                       event.category === "Craft Show"
                         ? "bg-purple-500"
                         : event.category === "New Release"
