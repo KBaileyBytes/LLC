@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 const PRODUCT_CATEGORIES = [
   "New & Unique",
   "Seasonal",
-  "Coasters",
   "Resin Bowls",
   "Thinkers",
   "Turtle Family",
