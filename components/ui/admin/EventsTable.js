@@ -19,6 +19,15 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "../badge";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../card";
 
 export function EventsTable() {
   const router = useRouter();
@@ -41,6 +50,24 @@ export function EventsTable() {
 
     fetchEvents();
   }, []);
+
+  const renderDate = (event) => {
+    const date = parseISO(event.date);
+
+    const formattedDate = date.toLocaleDateString("en-CA", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      timeZone: "UTC",
+    });
+
+    return (
+      <div className="font-medium line-clamp-1">
+        {formattedDate}
+        {event.time ? ` - ${event.time}` : ``}
+      </div>
+    );
+  };
 
   const columns = [
     {
@@ -126,7 +153,7 @@ export function EventsTable() {
   });
 
   return (
-    <div className="rounded-2xl border-1 border-neutral-200 shadow-md p-12">
+    <div className="rounded-2xl xl:border-1 border-neutral-200 xl:shadow-md xl:p-12">
       <Button
         onClick={() => router.push("admin/events")}
         className="bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer mx-4 my-2 px-6 py-3"
@@ -134,49 +161,21 @@ export function EventsTable() {
       >
         Add Event
       </Button>
-      {loading ? (
-        <div className="space-y-4">
-          {/* Table Header Skeleton */}
-          <div className="flex space-x-4">
-            {[...Array(6)].map((_, i) => (
-              <Skeleton
-                key={i}
-                className="h-10 w-full bg-neutral-200 rounded"
-              />
-            ))}
-          </div>
-          {/* Table Rows Skeleton */}
-          {[...Array(5)].map((_, rowIdx) => (
-            <div key={rowIdx} className="flex space-x-4">
-              {[...Array(6)].map((_, colIdx) => (
-                <Skeleton
-                  key={colIdx}
-                  className="h-10 w-full bg-neutral-100 rounded"
-                />
-              ))}
-            </div>
-          ))}
-        </div>
-      ) : (
+      <section className="hidden xl:block">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead
-                      key={header.id}
-                      className="text-lg font-bold py-4"
-                    >
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="text-lg font-bold py-4">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -191,8 +190,8 @@ export function EventsTable() {
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={`py-6 ${
-                        cell.column.id == "title" ? "font-bold" : ""
+                      className={`py-6 text-neutral-600 ${
+                        cell.column.id === "name" ? "font-bold" : ""
                       }`}
                     >
                       {flexRender(
@@ -215,7 +214,51 @@ export function EventsTable() {
             )}
           </TableBody>
         </Table>
-      )}
+      </section>
+      <section className="xl:hidden flex-row">
+        {events.map((event, i) => (
+          <Card className="my-8 border-neutral-200 shadow-2xs" key={i}>
+            <CardHeader>
+              <CardTitle className="text-lg sm:text-xl">
+                {event.title}
+              </CardTitle>
+              <CardDescription>
+                <div className="text-sm flex flex-col gap-2">
+                  {renderDate(event)}
+                </div>
+                <Badge
+                  variant="secondary"
+                  className={`px-3 my-3 text-white text-xs italic font-bold rounded-full ${
+                    event.category === "Craft Show"
+                      ? "bg-purple-500"
+                      : event.category === "New Release"
+                      ? "bg-green-500"
+                      : event.category === "News"
+                      ? "bg-orange-600"
+                      : ""
+                  }`}
+                >
+                  {event.category}
+                </Badge>
+              </CardDescription>
+              <CardAction>
+                <Button
+                  className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
+                  onClick={() => {
+                    router.push(`/admin/events/${event._id}`);
+                  }}
+                >
+                  Edit
+                </Button>
+              </CardAction>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3">
+              <p>{event.place}</p>
+              <p>{event.description}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
     </div>
   );
 }

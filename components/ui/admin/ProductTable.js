@@ -18,6 +18,15 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CldImage } from "next-cloudinary";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../card";
 
 export function ProductTable() {
   const router = useRouter();
@@ -113,7 +122,7 @@ export function ProductTable() {
   });
 
   return (
-    <div className="rounded-2xl border-1 border-neutral-200 shadow-md p-12">
+    <div className="rounded-2xl xl:border-1 border-neutral-200 xl:shadow-md xl:p-12">
       <Button
         onClick={() => router.push("admin/products")}
         className="bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer mx-4 my-2 px-6 py-3"
@@ -121,52 +130,97 @@ export function ProductTable() {
       >
         Add Product
       </Button>
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="text-lg font-bold py-4">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-                className="hover:bg-neutral-50 border-none"
-              >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className={`py-6 text-neutral-600 ${
-                      cell.column.id === "name" ? "font-bold" : ""
-                    }`}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+      <section className="hidden xl:block">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id} className="text-lg font-bold py-4">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="hover:bg-neutral-50 border-none"
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={`py-6 text-neutral-600 ${
+                        cell.column.id === "name" ? "font-bold" : ""
+                      }`}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </section>
+      <section className="xl:hidden flex-row">
+        {products.map((product, i) => (
+          <Card className="my-8 border-neutral-200 shadow-2xs" key={i}>
+            <CardHeader>
+              <CardTitle className="text-lg sm:text-xl">
+                {product.name}
+              </CardTitle>
+              <CardDescription>
+                {" "}
+                <Badge className="bg-teal-200 font-bold">
+                  {product.category}
+                </Badge>
+              </CardDescription>
+              <CardAction>
+                {" "}
+                <Button
+                  className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
+                  onClick={() => {
+                    router.push(`/admin/products/${product._id}`);
+                  }}
+                >
+                  Edit
+                </Button>
+              </CardAction>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-3">
+              <p>{product.details}</p>
+              <p className="text-neutral-700 text-sm italic">
+                {product.dimensions
+                  ? `${product.dimensions.width} x ${product.dimensions.height} ${product.dimensions.metric}`
+                  : "—"}
+              </p>
+              <p className="font-semibold">${product.price.toFixed(2)}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
     </div>
   );
 }
