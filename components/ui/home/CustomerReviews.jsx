@@ -8,22 +8,22 @@ export default function CustomerReviews() {
       </p>
       <section className="py-12 flex flex-col items-center 2xl:flex-row gap-4 justify-evenly ">
         <CustomerReview
-          review="Love It!"
-          name="Kyle B"
-          initials="KB"
+          review="Absolutely love my resin bowl! The craftsmanship is beautiful and the details are even better in person."
+          name="Sohpia M."
+          initials="SM"
           handle="FaceBook Marketplace"
         />
         <CustomerReview
-          review="A glowing review!"
-          name="Anon"
-          initials="AN"
-          handle=""
+          review="Great quality and really unique. The colors are vibrant and it feels sturdy."
+          name="Daniel R."
+          initials="DR"
+          handle="Shop"
         />
         <CustomerReview
           review="Amazing!"
           name="Someone"
           initials="SS"
-          handle="Somewhere"
+          handle="Instagram"
         />
       </section>
     </section>

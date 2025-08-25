@@ -209,7 +209,7 @@ export default function CheckoutPage() {
             </p>
             <section className="py-4">
               <p className="italic text-sm text-neutral-400">
-                Canada-wide shipping available
+                Canada-wide shipping available for $5.00
               </p>
               <p className="italic text-sm text-neutral-400">
                 Free delivery within Winnipeg, MB
