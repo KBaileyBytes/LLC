@@ -6,7 +6,7 @@ export default function CustomerReviews() {
       <p className="koh-santepheap text-2xl sm:text-4xl font-bold">
         What People Are Saying
       </p>
-      <section className="py-12 flex flex-col items-center 2xl:flex-row gap-4 justify-evenly ">
+      <section className="py-12 flex flex-col items-center 2xl:flex-row gap-4 justify-evenly">
         <CustomerReview
           review="Absolutely love my resin bowl! The craftsmanship is beautiful and the details are even better in person."
           name="Sohpia M."
@@ -17,12 +17,12 @@ export default function CustomerReviews() {
           review="Great quality and really unique. The colors are vibrant and it feels sturdy."
           name="Daniel R."
           initials="DR"
-          handle="Shop"
+          handle="LLC Shop"
         />
         <CustomerReview
-          review="Amazing!"
-          name="Someone"
-          initials="SS"
+          review="The turtle bowl is absolutely stunning! The ocean blue resin and shell details catch the light beautifully."
+          name="Jessica L."
+          initials="JL"
           handle="Instagram"
         />
       </section>
