@@ -3,9 +3,9 @@ import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
 
 export default function CustomerReview({ review, name, initials, handle }) {
   return (
-    <Card className="w-full px-8 border-neutral-400 shadow-none">
+    <Card className="w-full px-8 border-neutral-400 shadow-none h-48">
       <section className="flex gap-1">
-        <Avatar className="border-neutral-200 border-1 rounded-full w-fit p-3 self-center">
+        <Avatar className="border-neutral-200 border-1 rounded-full p-3 self-center">
           <AvatarFallback>{initials}</AvatarFallback>
         </Avatar>
         <section>

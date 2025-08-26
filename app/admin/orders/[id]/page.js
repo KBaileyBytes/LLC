@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { CldImage } from "next-cloudinary";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default function OrderPage() {
   const { id } = useParams(); // get the slug from the URL
@@ -224,15 +224,11 @@ export default function OrderPage() {
               >
                 Edit Order
               </Button>
-              <Button
-                className=" py-5 bg-neutral-400 hover:cursor-pointer rounded-lg "
-                onClick={(e) => {
-                  e.preventDefault();
-                  redirect("/admin/");
-                }}
-              >
-                Back
-              </Button>
+              <Link aschild="true" href={`/admin`}>
+                <Button className=" py-5 bg-neutral-400 hover:cursor-pointer rounded-lg ">
+                  Back
+                </Button>
+              </Link>
             </section>
             <Button
               className="py-5 text-neutral-700 font-bold bg-red-500 hover:cursor-pointer  hover:shadow-md border border-red-700 rounded-lg"

@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { CldImage } from "next-cloudinary";
 import AddToCart from "../AddToCart";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default function ProductCard({ product, index }) {
   const renderSkeletons = () => (
@@ -40,24 +40,23 @@ export default function ProductCard({ product, index }) {
           index === 1 || index === 2 ? "flex-col xl:flex-row" : "flex-col"
         } justify-between max-w-[500px] xl:max-w-[800px] mx-auto items-center gap-8`}
       >
-        <CldImage
-          src={product.image}
-          alt={product.name}
-          width={index === 1 || index === 2 ? 325 : 400}
-          height={index === 1 || index === 2 ? 250 : 600}
-          className="cursor-pointer rounded-2xl"
-        />
+        <Link aschild="true" href={`/shop/${product._id}`}>
+          <CldImage
+            src={product.image}
+            alt={product.name}
+            width={500}
+            height={700}
+            className="cursor-pointer rounded-2xl"
+          />
+        </Link>
         <div className="w-full flex justify-center xl:justify-start">
           <div className="w-full">
             <span>
-              <p
-                className="koh-santepheap text-3xl py-4 font-semibold cursor-pointer"
-                onClick={() => {
-                  redirect(`/shop/${product._id}`);
-                }}
-              >
-                {product.name}
-              </p>
+              <Link aschild="true" href={`/shop/${product._id}`}>
+                <p className="koh-santepheap text-3xl py-4 font-semibold cursor-pointer">
+                  {product.name}
+                </p>
+              </Link>
             </span>
             <section className="flex justify-between">
               <section className="text-neutral-500">

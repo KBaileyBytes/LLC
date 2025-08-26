@@ -12,6 +12,7 @@ import { CheckIcon } from "lucide-react";
 import { redirect } from "next/navigation";
 import { useParams } from "next/navigation";
 import { CldUploadWidget } from "next-cloudinary";
+import Link from "next/link";
 
 const PRODUCT_CATEGORIES = [
   "New & Unique",
@@ -392,15 +393,11 @@ export default function EditProductPage() {
             >
               Edit Product
             </Button>
-            <Button
-              className=" py-5 bg-neutral-400 hover:cursor-pointer rounded-lg "
-              onClick={(e) => {
-                e.preventDefault();
-                redirect("/admin/");
-              }}
-            >
-              Back
-            </Button>
+            <Link aschild="true" href={`/admin`}>
+              <Button className=" py-5 bg-neutral-400 hover:cursor-pointer rounded-lg ">
+                Back
+              </Button>
+            </Link>
           </section>
           <Button
             className="py-5 text-neutral-700 font-bold bg-red-500 hover:cursor-pointer  hover:shadow-md border border-red-700 rounded-lg"

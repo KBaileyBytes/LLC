@@ -18,6 +18,7 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 import { Badge } from "../badge";
 import {
   Card,
@@ -134,14 +135,11 @@ export function EventsTable() {
       accessorKey: "modify",
       header: () => <p>Modify</p>,
       cell: ({ row }) => (
-        <Button
-          onClick={() => {
-            router.push(`/admin/events/${row.original._id}`);
-          }}
-          className="hover:cursor-pointer hover:shadow-md border border-neutral-300"
-        >
-          Edit
-        </Button>
+        <Link aschild="true" href={`/admin/events/${row.original._id}`}>
+          <Button className="hover:cursor-pointer hover:shadow-md border border-neutral-300">
+            Edit
+          </Button>
+        </Link>
       ),
     },
   ];
@@ -154,13 +152,14 @@ export function EventsTable() {
 
   return (
     <div className="rounded-2xl xl:border-1 border-neutral-200 xl:shadow-md xl:p-12">
-      <Button
-        onClick={() => router.push("admin/events")}
-        className="bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer mx-4 my-2 px-6 py-3"
-        size="lg"
-      >
-        Add Event
-      </Button>
+      <Link aschild="true" href={`/admin/events`}>
+        <Button
+          className="bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer mx-4 my-2 px-6 py-3"
+          size="lg"
+        >
+          Add Event
+        </Button>
+      </Link>
       <section className="hidden xl:block">
         <Table>
           <TableHeader>
@@ -241,21 +240,21 @@ export function EventsTable() {
                   {event.category}
                 </Badge>
               </CardDescription>
-              <CardAction>
-                <Button
-                  className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
-                  onClick={() => {
-                    router.push(`/admin/events/${event._id}`);
-                  }}
-                >
-                  Edit
-                </Button>
-              </CardAction>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
               <p>{event.place}</p>
-              <p>{event.description}</p>
+              <p className="line-clamp-4">{event.description}</p>
             </CardContent>
+            <CardFooter className=" self-center">
+              <Button
+                className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
+                onClick={() => {
+                  router.push(`/admin/events/${event._id}`);
+                }}
+              >
+                Edit
+              </Button>
+            </CardFooter>
           </Card>
         ))}
       </section>

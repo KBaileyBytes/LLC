@@ -18,6 +18,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CldImage } from "next-cloudinary";
+import Link from "next/link";
 import {
   Card,
   CardAction,
@@ -103,14 +104,11 @@ export function ProductTable() {
       accessorKey: "modify",
       header: () => <p className="text-center">Modify</p>,
       cell: ({ row }) => (
-        <Button
-          className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
-          onClick={() => {
-            router.push(`/admin/products/${row.original._id}`);
-          }}
-        >
-          Edit
-        </Button>
+        <Link aschild="true" href={`/admin/products/${row.original._id}`}>
+          <Button className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300">
+            Edit
+          </Button>
+        </Link>
       ),
     },
   ];
@@ -123,13 +121,14 @@ export function ProductTable() {
 
   return (
     <div className="rounded-2xl xl:border-1 border-neutral-200 xl:shadow-md xl:p-12">
-      <Button
-        onClick={() => router.push("admin/products")}
-        className="bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer mx-4 my-2 px-6 py-3"
-        size="lg"
-      >
-        Add Product
-      </Button>
+      <Link aschild="true" href={`admin/products`}>
+        <Button
+          className=" bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer"
+          size="lg"
+        >
+          Add Product
+        </Button>
+      </Link>
       <section className="hidden xl:block">
         <Table>
           <TableHeader>
@@ -186,18 +185,36 @@ export function ProductTable() {
       </section>
       <section className="xl:hidden flex-row">
         {products.map((product, i) => (
-          <Card className="my-8 border-neutral-200 shadow-2xs" key={i}>
-            <CardHeader>
-              <CardTitle className="text-lg sm:text-xl">
-                {product.name}
-              </CardTitle>
-              <CardDescription>
-                {" "}
-                <Badge className="bg-teal-200 font-bold">
-                  {product.category}
-                </Badge>
-              </CardDescription>
-              <CardAction>
+          <div key={i} className="py-6">
+            <Card className="my-8 px-2 shadow-none border-0 border-neutral-100 overflow-hidden pt-0">
+              <CldImage
+                src={product.image}
+                width={400}
+                height={600}
+                alt={product.name}
+                className="w-full object-fit rounded-lg max-w-md self-center"
+              />
+              <CardHeader className="px-0">
+                <CardTitle className="text-lg sm:text-xl">
+                  {product.name}
+                </CardTitle>
+                <CardDescription>
+                  {" "}
+                  <Badge className="bg-teal-200 font-bold">
+                    {product.category}
+                  </Badge>
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col gap-3 px-0">
+                <p className="line-clamp-4">{product.details}</p>
+                <p className="text-neutral-700 text-sm italic">
+                  {product.dimensions
+                    ? `${product.dimensions.width} x ${product.dimensions.height} ${product.dimensions.metric}`
+                    : "—"}
+                </p>
+                <p className="font-semibold">${product.price.toFixed(2)}</p>
+              </CardContent>
+              <CardFooter className="self-center">
                 {" "}
                 <Button
                   className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
@@ -207,18 +224,10 @@ export function ProductTable() {
                 >
                   Edit
                 </Button>
-              </CardAction>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
-              <p>{product.details}</p>
-              <p className="text-neutral-700 text-sm italic">
-                {product.dimensions
-                  ? `${product.dimensions.width} x ${product.dimensions.height} ${product.dimensions.metric}`
-                  : "—"}
-              </p>
-              <p className="font-semibold">${product.price.toFixed(2)}</p>
-            </CardContent>
-          </Card>
+              </CardFooter>
+            </Card>
+            <div className="border-neutral-200 border-1"></div>
+          </div>
         ))}
       </section>
     </div>

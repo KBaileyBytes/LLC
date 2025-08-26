@@ -8,7 +8,8 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { toast } from "sonner";
 import { CheckIcon } from "lucide-react";
-import { redirect } from "next/navigation";
+import Link from "next/link";
+import { CldUploadWidget } from "next-cloudinary";
 
 const EVENT_CATEGORIES = ["Craft Show", "News", "New Release"];
 
@@ -195,15 +196,11 @@ export default function AddEventPage() {
             >
               Create Event
             </Button>
-            <Button
-              className=" py-5 bg-neutral-400 hover:cursor-pointer rounded-lg "
-              onClick={(e) => {
-                e.preventDefault();
-                redirect("/admin/");
-              }}
-            >
-              Back
-            </Button>
+            <Link aschild="true" href={`/admin`}>
+              <Button className=" py-5 bg-neutral-400 hover:cursor-pointer rounded-lg ">
+                Back
+              </Button>
+            </Link>
           </section>
         </section>
       </section>

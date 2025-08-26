@@ -35,7 +35,7 @@ export default function CalendarGrid({ relatedEvents, selectedDate }) {
       </h2>
 
       {/* Weekdays header */}
-      <div className="grid grid-cols-7 text-center font-bold mb-2">
+      <div className=" hidden sm:grid grid-cols-7 text-center font-bold mb-2">
         {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((d) => (
           <div key={d} className="koh-santepheap ">
             {d}

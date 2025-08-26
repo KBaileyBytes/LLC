@@ -10,7 +10,7 @@ export default async function AdminDashboard() {
   const pages = ["Products", "Orders", "Events", "Help"];
 
   return (
-    <section className="p-12">
+    <section className="p-6">
       <p className="koh-santepheap text-neutral-800 text-4xl font-bold px-4">
         Admin Dashboard
       </p>
@@ -18,7 +18,7 @@ export default async function AdminDashboard() {
       <InfoGrid />
       <section>
         <Tabs defaultValue="Products" className="px-8 flex flex-col gap-6">
-          <TabsList className="flex flex-col w-full gap-8 sm:flex-row self-center mt-20 h-fit md:mt-0">
+          <TabsList className="flex flex-col w-full gap-8 sm:flex-row self-center lg:mt-20 h-fit md:mt-0">
             {pages.map((category, i) => (
               <TabsTrigger
                 key={i}

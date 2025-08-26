@@ -10,6 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { CldImage } from "next-cloudinary";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
 
 export default function FeaturedCarousel({ props }) {
@@ -42,11 +43,7 @@ export default function FeaturedCarousel({ props }) {
             key={i}
             className="transition-all duration-300 content-center"
           >
-            <Card className="shadow-none border-0">
-              <CardContent className="flex flex-col items-start p-6">
-                <Skeleton className="h-[600px] w-full max-w-[90%] sm:max-w-md rounded-2xl mx-auto" />{" "}
-              </CardContent>
-            </Card>
+            <Skeleton className="bg-neutral-200 shadow-none border-0 h-[600px] w-full max-w-[90%] sm:max-w-md rounded-2xl mx-auto"></Skeleton>
           </CarouselItem>
         ))}
       </CarouselContent>
@@ -74,19 +71,20 @@ export default function FeaturedCarousel({ props }) {
           <CarouselItem
             key={i}
             className="transition-all duration-300 content-center"
-            onClick={() => router.push(`/shop/${product._id}`)}
           >
-            <Card className="shadow-none border-0">
-              <CardContent className="flex flex-col items-start p-6">
-                <CldImage
-                  src={product.image}
-                  alt={product.name}
-                  width={600}
-                  height={400}
-                  className="w-full h-auto rounded-2xl object-cover max-w-[90%] sm:max-w-md mx-auto cursor-pointer hover:scale-103 transition-transform"
-                />
-              </CardContent>
-            </Card>
+            <Link aschild="true" href={`/shop/${product._id}`}>
+              <Card className="shadow-none border-0">
+                <CardContent className="flex flex-col items-start p-6">
+                  <CldImage
+                    src={product.image}
+                    alt={product.name}
+                    width={600}
+                    height={400}
+                    className="w-full h-auto rounded-2xl object-cover max-w-[90%] sm:max-w-md mx-auto cursor-pointer hover:scale-103 transition-transform"
+                  />
+                </CardContent>
+              </Card>
+            </Link>
           </CarouselItem>
         ))}
       </CarouselContent>

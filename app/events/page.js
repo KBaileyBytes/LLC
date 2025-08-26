@@ -49,7 +49,7 @@ export default function UpcomingEventsPage() {
         Upcoming Events
       </p>
 
-      <section className="py-2 pl-16">
+      <section className="  sm:block py-2 pl-16">
         <Breadcrumb>
           <BreadcrumbList>
             {months.map((month, i) => (

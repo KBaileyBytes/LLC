@@ -27,6 +27,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../card";
+import Link from "next/link";
 
 const getBadgeColor = (category) => {
   switch (category?.trim().toLowerCase()) {
@@ -106,14 +107,11 @@ export function OrderTable() {
       accessorKey: "modify",
       header: () => <span>Modify</span>,
       cell: ({ row }) => (
-        <Button
-          className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
-          onClick={() => {
-            router.push(`/admin/orders/${row.original._id}`);
-          }}
-        >
-          Edit
-        </Button>
+        <Link aschild="true" href={`/admin/orders/${row.original._id}`}>
+          <Button className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300">
+            Edit
+          </Button>
+        </Link>
       ),
     },
   ];
@@ -247,16 +245,6 @@ export function OrderTable() {
                   </Badge>
                 </div>
               </CardDescription>
-              <CardAction>
-                <Button
-                  className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
-                  onClick={() => {
-                    router.push(`/admin/orders/${order._id}`);
-                  }}
-                >
-                  Edit
-                </Button>
-              </CardAction>
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
               <ul className="text-sm text-neutral-600 space-y-1">
@@ -269,8 +257,16 @@ export function OrderTable() {
                 {order.products.length > 3 && <li>...</li>}
               </ul>
             </CardContent>
-            <CardFooter>
-              <p className="text-lg">${order.subtotal.toFixed(2)}</p>
+            <CardFooter className="justify-between">
+              <p className="text-lg font-bold">${order.subtotal.toFixed(2)}</p>
+              <Button
+                className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
+                onClick={() => {
+                  router.push(`/admin/orders/${order._id}`);
+                }}
+              >
+                Edit
+              </Button>
             </CardFooter>
           </Card>
         ))}
