@@ -17,10 +17,11 @@ import Link from "next/link";
 const PRODUCT_CATEGORIES = [
   "New & Unique",
   "Seasonal",
-  "Coasters",
   "Resin Bowls",
-  "Thinkers",
-  "Turtle Family",
+  "Sculpted Expressions",
+  "Ocean Friends",
+  "Dragons Den",
+  "Pretty and Practical",
 ];
 const PLACEMENT_OPTIONS = ["New", "Unique", "BestSeller", "Carousel"];
 

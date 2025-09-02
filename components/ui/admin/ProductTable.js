@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -30,7 +29,6 @@ import {
 } from "../card";
 
 export function ProductTable() {
-  const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -215,18 +213,18 @@ export function ProductTable() {
                 <p className="font-semibold">${product.price.toFixed(2)}</p>
               </CardContent>
               <CardFooter className="self-center">
-                {" "}
-                <Button
-                  className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300"
-                  onClick={() => {
-                    router.push(`/admin/products/${product._id}`);
-                  }}
-                >
-                  Edit
-                </Button>
+                <Link href={`/admin/products/${product._id}`} aschild="true">
+                  <Button className="hover:cursor-pointer hover:shadow-md border-1 border-neutral-300">
+                    Edit
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
-            <div className="border-neutral-200 border-1"></div>
+            <div
+              className={`border-neutral-200 border-${
+                i === products.length - 1 ? "0" : "1"
+              }`}
+            ></div>
           </div>
         ))}
       </section>

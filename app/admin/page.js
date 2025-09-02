@@ -5,9 +5,10 @@ import SignOutButton from "@/components/ui/admin/SignOutButton";
 import InfoGrid from "@/components/ui/admin/InfoGrid";
 import HelpForm from "@/components/ui/admin/HelpForm";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import LayoutManager from "@/components/ui/admin/LayoutManager";
 
 export default async function AdminDashboard() {
-  const pages = ["Products", "Orders", "Events", "Help"];
+  const pages = ["Products", "Orders", "Events", "Layout", "Help"];
 
   return (
     <section className="p-6">
@@ -48,7 +49,9 @@ export default async function AdminDashboard() {
           <TabsContent value="Orders" className="mb-4 pb-4">
             <OrderTable />
           </TabsContent>
-
+          <TabsContent value="Layout" className="mb-4 pb-4">
+            <LayoutManager />
+          </TabsContent>
           <TabsContent value="Help" className="mb-4 pb-4">
             <HelpForm />
           </TabsContent>

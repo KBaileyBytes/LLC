@@ -2,7 +2,6 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 
-import { redirect } from "next/navigation";
 import AddToCart from "../AddToCart";
 import Link from "next/link";
 

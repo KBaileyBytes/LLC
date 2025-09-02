@@ -10,8 +10,10 @@ const PRODUCT_CATEGORIES = [
   "New & Unique",
   "Seasonal",
   "Resin Bowls",
-  "Thinkers",
-  "Turtle Family",
+  "Sculpted Expressions",
+  "Ocean Friends",
+  "Dragons Den",
+  "Pretty and Practical",
 ];
 
 export default function ShopPage() {
