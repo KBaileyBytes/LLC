@@ -14,10 +14,11 @@ import { CldUploadWidget } from "next-cloudinary";
 const PRODUCT_CATEGORIES = [
   "New & Unique",
   "Seasonal",
-  "Coasters",
   "Resin Bowls",
-  "Thinkers",
-  "Turtle Family",
+  "Sculpted Expressions",
+  "Ocean Friends",
+  "Dragons Den",
+  "Pretty and Practical",
 ];
 const PLACEMENT_OPTIONS = ["New", "Unique", "BestSeller", "Carousel"];
 const DIMENSION_UNITS = ["mm", "cm", "inch"];
