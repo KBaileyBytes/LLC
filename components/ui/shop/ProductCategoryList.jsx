@@ -3,10 +3,11 @@ import ProductTab from "./ProductTab";
 const PRODUCT_CATEGORIES = [
   "New & Unique",
   "Seasonal",
-  "Coasters",
   "Resin Bowls",
-  "Thinkers",
-  "Turtle Family",
+  "Sculpted Expressions",
+  "Ocean Friends",
+  "Dragons Den",
+  "Pretty and Practical",
 ];
 
 export default function ProductCategoryList({ products }) {
