@@ -29,25 +29,33 @@ export default function LayoutManager() {
       <section className="flex flex-col gap-4">
         <LayoutGroup
           title="Carousel"
-          products={products.filter((product) =>
+          allProducts={products}
+          relatedProducts={products.filter((product) =>
             product.placement.includes("Carousel")
           )}
         />
         <LayoutGroup
           title="Unique"
-          products={products.filter((product) =>
+          max={3}
+          allProducts={products}
+          relatedProducts={products.filter((product) =>
             product.placement.includes("Unique")
           )}
         />
         <LayoutGroup
           title="New"
-          products={products.filter((product) =>
+          max={2}
+          allProducts={products}
+          relatedProducts={products.filter((product) =>
             product.placement.includes("New")
           )}
         />
         <LayoutGroup
           title="Best Sellers"
-          products={products.filter((product) =>
+          placement="BestSeller"
+          max={3}
+          allProducts={products}
+          relatedProducts={products.filter((product) =>
             product.placement.includes("BestSeller")
           )}
         />
