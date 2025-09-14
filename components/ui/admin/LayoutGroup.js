@@ -28,6 +28,7 @@ import { CldImage } from "next-cloudinary";
 
 export default function LayoutGroup({
   relatedProducts,
+  updateProducts,
   allProducts,
   title,
   max,
@@ -47,25 +48,43 @@ export default function LayoutGroup({
   };
 
   const handleRemove = async (id, placement) => {
-    await fetch("/api/products/remove-placement", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, placement }),
-    });
+    try {
+      await fetch("/api/products/remove-placement", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id, placement }),
+      });
+
+      const res = await fetch("/api/products");
+      const updated = await res.json();
+      updateProducts(updated.result);
+    } catch (err) {
+      console.error("Failed to remove product:", err);
+    }
   };
 
   const handleSave = async () => {
-    console.log("Selected products to add:", selected);
-    await fetch("/api/products/placement", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        ids: selected,
-        placement: alt, // the section name
-      }),
-    });
-    setOpen(false);
-    setSelected([]);
+    try {
+      await fetch("/api/products/placement", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ids: selected,
+          placement: alt,
+        }),
+      });
+
+      // fetch updated products (simplest + most reliable)
+      const res = await fetch("/api/products");
+      const updated = await res.json();
+      updateProducts(updated.result);
+
+      // close modal and reset
+      setOpen(false);
+      setSelected([]);
+    } catch (err) {
+      console.error("Failed to save products:", err);
+    }
   };
 
   return (

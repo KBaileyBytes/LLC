@@ -23,6 +23,11 @@ export default function LayoutManager() {
     fetchProducts();
   }, []);
 
+  const updateProducts = (newProducts) => {
+    console.log(newProducts);
+    if (newProducts) setProducts(newProducts);
+  };
+
   return (
     <>
       <p className="text-3xl font-bold py-8">Product Layout</p>
@@ -30,6 +35,7 @@ export default function LayoutManager() {
         <LayoutGroup
           title="Carousel"
           allProducts={products}
+          updateProducts={updateProducts}
           relatedProducts={products.filter((product) =>
             product.placement.includes("Carousel")
           )}
@@ -38,6 +44,7 @@ export default function LayoutManager() {
           title="Unique"
           max={3}
           allProducts={products}
+          updateProducts={updateProducts}
           relatedProducts={products.filter((product) =>
             product.placement.includes("Unique")
           )}
@@ -46,6 +53,7 @@ export default function LayoutManager() {
           title="New"
           max={2}
           allProducts={products}
+          updateProducts={updateProducts}
           relatedProducts={products.filter((product) =>
             product.placement.includes("New")
           )}
@@ -55,6 +63,7 @@ export default function LayoutManager() {
           placement="BestSeller"
           max={3}
           allProducts={products}
+          updateProducts={updateProducts}
           relatedProducts={products.filter((product) =>
             product.placement.includes("BestSeller")
           )}

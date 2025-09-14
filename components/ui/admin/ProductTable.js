@@ -119,14 +119,22 @@ export function ProductTable() {
 
   return (
     <div className="rounded-2xl xl:border-1 border-neutral-200 xl:shadow-md xl:p-12">
-      <Link aschild="true" href={`admin/products`}>
+      <section className="flex flex-row gap-4">
+        <Link aschild="true" href={`admin/products`}>
+          <Button
+            className=" bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer font-bold"
+            size="lg"
+          >
+            Add Product
+          </Button>
+        </Link>
         <Button
-          className=" bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer"
+          className=" bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer font-bold"
           size="lg"
         >
-          Add Product
+          Update Product Categories
         </Button>
-      </Link>
+      </section>
       <section className="hidden xl:block">
         <Table>
           <TableHeader>
