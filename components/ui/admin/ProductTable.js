@@ -6,6 +6,18 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../alert-dialog";
+import { useForm, useFieldArray } from "react-hook-form";
+import {
   Table,
   TableBody,
   TableCell,
@@ -17,6 +29,7 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CldImage } from "next-cloudinary";
+import { toast } from "sonner";
 import Link from "next/link";
 import {
   Card,
@@ -30,22 +43,120 @@ import {
 
 export function ProductTable() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [open, setOpen] = useState(false);
+  const { control, register, handleSubmit, getValues, reset } = useForm({
+    defaultValues: { category: [""] },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "category",
+  });
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("/api/admin/products");
+      const data = await res.json();
+      setProducts(data);
+    } catch (err) {
+      console.error("Failed to fetch products", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const res = await fetch("/api/products/categories");
+      const data = await res.json();
+      setCategories(data.categories);
+      reset({
+        category: data.categories.map((cat) => ({
+          _id: cat._id,
+          name: cat.name,
+        })),
+      });
+    } catch (err) {
+      console.error("Failed to fetch categories:", err);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const res = await fetch("/api/admin/products");
-        const data = await res.json();
-        setProducts(data);
-      } catch (err) {
-        console.error("Failed to fetch products", err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchProducts();
+    fetchCategories();
   }, []);
+
+  async function handleCreateCategory(name) {
+    try {
+      const res = await fetch("/api/admin/products/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category: name }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to create category");
+      }
+
+      const data = await res.json();
+      console.log("Created category:", data.category);
+
+      // refetch categories here
+      await fetchCategories();
+
+      toast.success("Category created successfully");
+    } catch (err) {
+      console.error("Error creating category:", err);
+      toast.error("Failed to create category");
+    }
+  }
+
+  async function handleUpdateCategory(id, name) {
+    try {
+      const res = await fetch(`/api/admin/products/categories/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to update category");
+      }
+
+      const data = await res.json();
+      console.log("Updated category:", data.category);
+
+      toast.success("Category updated successfully");
+    } catch (err) {
+      console.error("Error updating category:", err);
+      toast.error("Failed to update category");
+    }
+  }
+
+  async function handleDeleteCategory(id) {
+    try {
+      const res = await fetch(`/api/admin/products/categories/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Failed to delete category");
+      }
+
+      const data = await res.json();
+      console.log("Deleted category:", data.category);
+
+      toast.success("Category deleted successfully");
+
+      // refetch categories here
+      await fetchCategories();
+    } catch (err) {
+      toast.error(err.message || "Failed to delete category");
+    }
+  }
 
   const columns = [
     {
@@ -69,7 +180,7 @@ export function ProductTable() {
     {
       accessorKey: "category",
       header: () => <span>Category</span>,
-      cell: ({ row }) => <div>{row.original.category}</div>,
+      cell: ({ row }) => <div>{row.original?.category?.name}</div>,
     },
     {
       accessorKey: "price",
@@ -131,9 +242,99 @@ export function ProductTable() {
         <Button
           className=" bg-teal-300 border-1 border-neutral-500 hover:cursor-pointer font-bold"
           size="lg"
+          onClick={() => setOpen(true)}
         >
-          Update Product Categories
+          Product Categories
         </Button>
+        <AlertDialog open={open} onOpenChange={setOpen}>
+          <AlertDialogContent className="bg-white text-neutral-900 border border-neutral-300 shadow-xl rounded-xl">
+            <AlertDialogHeader>
+              <AlertDialogTitle className="text-2xl font-semibold">
+                Update Product Categories
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                Only categories without associated products can be deleted.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+
+            <div className="grid gap-4 py-4">
+              {fields.map((field, index) => (
+                <div
+                  key={field?._id && field.id}
+                  className="flex items-center gap-4"
+                >
+                  <input
+                    {...register(`category.${index}.name`, {
+                      required: "Required",
+                    })}
+                    className="w-full border rounded p-2"
+                  />
+
+                  {index < categories.length ? (
+                    <>
+                      <Button
+                        type="button"
+                        className="text-green-600 bg-neutral-100"
+                        onClick={() =>
+                          handleUpdateCategory(
+                            field._id,
+                            getValues(`category.${index}.name`)
+                          )
+                        }
+                      >
+                        Update
+                      </Button>
+                      <Button
+                        type="button"
+                        className="text-red-600 bg-neutral-100"
+                        onClick={() => handleDeleteCategory(field._id)}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        type="button"
+                        className="text-blue-600 bg-neutral-100"
+                        onClick={() =>
+                          handleCreateCategory(
+                            getValues(`category.${index}.name`)
+                          )
+                        }
+                      >
+                        Create
+                      </Button>
+                      <Button
+                        type="button"
+                        className="text-red-600 bg-neutral-100"
+                        onClick={() => remove(index)}
+                      >
+                        Remove
+                      </Button>
+                    </>
+                  )}
+                </div>
+              ))}
+
+              <Button
+                type="button"
+                onClick={() => append({ _id: Math.random(), name: "" })}
+                className="bg-neutral-200 hover:bg-neutral-300"
+              >
+                + Add Category
+              </Button>
+            </div>
+
+            <AlertDialogFooter>
+              <AlertDialogAction asChild>
+                <Button className="bg-green-600 text-white hover:bg-green-700">
+                  Done
+                </Button>
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </section>
       <section className="hidden xl:block">
         <Table>

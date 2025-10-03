@@ -6,7 +6,7 @@ export default function ShopCategoryTabs({ categories }) {
       {categories.map((category, i) => (
         <TabsTrigger
           key={i}
-          value={category}
+          value={category.name}
           className=" rounded-none koh-santepheap text-lg transition-all
            data-[state=active]:text-teal-500
            data-[state=active]:border-b-teal-500
@@ -17,7 +17,7 @@ export default function ShopCategoryTabs({ categories }) {
            hover:border-b-2
            hover:cursor-pointer"
         >
-          {category}
+          {category.name}
         </TabsTrigger>
       ))}
     </TabsList>

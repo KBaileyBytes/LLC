@@ -5,21 +5,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useForm, useFieldArray } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import { CheckIcon } from "lucide-react";
 import Link from "next/link";
 import { CldUploadWidget } from "next-cloudinary";
 
-const PRODUCT_CATEGORIES = [
-  "New & Unique",
-  "Seasonal",
-  "Resin Bowls",
-  "Sculpted Expressions",
-  "Ocean Friends",
-  "Dragons Den",
-  "Pretty and Practical",
-];
 const PLACEMENT_OPTIONS = ["New", "Unique", "BestSeller", "Carousel"];
 const DIMENSION_UNITS = ["mm", "cm", "inch"];
 
@@ -60,6 +51,20 @@ export default function AddProductPage() {
 
   const [resource, setResource] = useState(null);
   const customizableEnabled = watch("customizable.enabled");
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/products/categories");
+        const data = await res.json();
+        setCategories(data.categories); // e.g. ["New & Unique", "Seasonal", ...]
+      } catch (err) {
+        console.error("Failed to fetch categories:", err);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const onSubmit = async (data) => {
     const response = await fetch("/api/admin/products/", {
@@ -130,9 +135,9 @@ export default function AddProductPage() {
               {...register("category", { required: "Category is required" })}
               className="border rounded-md p-2 border-neutral-300 focus-visible:ring-neutral-700 focus-visible:ring-1"
             >
-              {PRODUCT_CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
+              {categories.map((cat, i) => (
+                <option key={i} value={cat}>
+                  {cat.name}
                 </option>
               ))}
             </select>

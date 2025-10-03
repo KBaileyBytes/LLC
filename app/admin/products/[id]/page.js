@@ -14,15 +14,6 @@ import { useParams } from "next/navigation";
 import { CldUploadWidget } from "next-cloudinary";
 import Link from "next/link";
 
-const PRODUCT_CATEGORIES = [
-  "New & Unique",
-  "Seasonal",
-  "Resin Bowls",
-  "Sculpted Expressions",
-  "Ocean Friends",
-  "Dragons Den",
-  "Pretty and Practical",
-];
 const PLACEMENT_OPTIONS = ["New", "Unique", "BestSeller", "Carousel"];
 
 export default function EditProductPage() {
@@ -54,7 +45,7 @@ export default function EditProductPage() {
   });
   const [resource, setResource] = useState();
   const [product, setProduct] = useState({});
-
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const customizableEnabled = watch("customizable.enabled");
 
@@ -83,9 +74,21 @@ export default function EditProductPage() {
         setLoading(false);
       }
     };
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/products/categories");
+        if (!res.ok) throw new Error("Failed to fetch categories");
+
+        const data = await res.json();
+        setCategories(data.categories || []);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
 
     if (params.id) {
       fetchProduct();
+      fetchCategories();
     }
   }, [params.id, reset]);
 
@@ -209,18 +212,21 @@ export default function EditProductPage() {
           <div className="grid gap-3">
             <Label>Category *</Label>
             <select
-              {...register("category")}
+              {...register("category", { required: "Category is required" })}
               className="border rounded-md p-2 border-neutral-300 focus-visible:ring-neutral-700 focus-visible:ring-1"
-              defaultValue="New & Unique"
+              defaultValue={product?.category || ""}
             >
-              {PRODUCT_CATEGORIES.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
+              <option value="" disabled>
+                Select a category
+              </option>
+              {categories.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
                 </option>
               ))}
             </select>
             {errors.category && (
-              <span className=" text-sm text-red-600 italic ">
+              <span className="text-sm text-red-600 italic">
                 {errors.category.message}
               </span>
             )}

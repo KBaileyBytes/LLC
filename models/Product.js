@@ -8,16 +8,8 @@ const ProductSchema = new mongoose.Schema(
       trim: true,
     },
     category: {
-      type: String,
-      enum: [
-        "New & Unique",
-        "Seasonal",
-        "Resin Bowls",
-        "Sculpted Expressions",
-        "Ocean Friends",
-        "Dragons Den",
-        "Pretty and Practical",
-      ],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "ProductCategory",
       required: true,
     },
     price: {

@@ -6,18 +6,9 @@ import ShopCategoryTabs from "@/components/ui/shop/ShopCategoryTabs";
 import { Tabs } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
 
-const PRODUCT_CATEGORIES = [
-  "New & Unique",
-  "Seasonal",
-  "Resin Bowls",
-  "Sculpted Expressions",
-  "Ocean Friends",
-  "Dragons Den",
-  "Pretty and Practical",
-];
-
 export default function ShopPage() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -33,6 +24,19 @@ export default function ShopPage() {
         setLoading(false);
       }
     };
+    const fetchCategories = async () => {
+      try {
+        const res = await fetch("/api/products/categories");
+        if (!res.ok) throw new Error("Failed to fetch categories");
+
+        const data = await res.json();
+        setCategories(data.categories || []);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+
+    fetchCategories();
 
     fetchProducts();
   }, []);
@@ -41,7 +45,7 @@ export default function ShopPage() {
     <section className="p-8">
       <BestSellers allProducts={products} />
       <Tabs defaultValue="New & Unique" className="px-8 flex flex-col gap-6">
-        <ShopCategoryTabs categories={PRODUCT_CATEGORIES} />
+        <ShopCategoryTabs categories={categories} />
         <ProductCategoryList products={products} />
       </Tabs>
     </section>
