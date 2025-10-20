@@ -136,7 +136,7 @@ export default function AddProductPage() {
               className="border rounded-md p-2 border-neutral-300 focus-visible:ring-neutral-700 focus-visible:ring-1"
             >
               {categories.map((cat, i) => (
-                <option key={i} value={cat}>
+                <option key={i} value={cat._id}>
                   {cat.name}
                 </option>
               ))}
