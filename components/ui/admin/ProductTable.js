@@ -86,6 +86,23 @@ export function ProductTable() {
     fetchCategories();
   }, []);
 
+  useEffect(() => {
+    if (!products.length || !categories.length) return;
+
+    const updatedProducts = products.map((product) => {
+      const matchedCategory = categories.find(
+        (category) => category._id === product.category
+      );
+
+      return {
+        ...product,
+        category: matchedCategory ? matchedCategory.name : product.category,
+      };
+    });
+
+    setProducts(updatedProducts);
+  }, [products.length, categories]);
+
   async function handleCreateCategory(name) {
     try {
       const res = await fetch("/api/admin/products/categories", {
@@ -180,7 +197,7 @@ export function ProductTable() {
     {
       accessorKey: "category",
       header: () => <span>Category</span>,
-      cell: ({ row }) => <div>{row.original?.category?.name}</div>,
+      cell: ({ row }) => <div>{row.original?.category}</div>,
     },
     {
       accessorKey: "price",

@@ -2,9 +2,7 @@ import mongoose from "mongoose";
 import Product from "./models/Product.js";
 
 async function migrateCustomizableField() {
-  await mongoose.connect(
-    "mongodb+srv://LLCAdmin:ZQbZTE91VF17goRK@llc-cluster.3xlcgej.mongodb.net/LLC-DB?retryWrites=true&w=majority&appName=LLC-Cluster"
-  );
+  await mongoose.connect(process.env.MONGODB_URI);
 
   const products = await Product.find();
 
